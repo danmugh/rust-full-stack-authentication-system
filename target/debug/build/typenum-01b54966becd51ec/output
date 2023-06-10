@@ -1,3 +1,3 @@
 cargo:rerun-if-changed=build/main.rs
-cargo:rustc-env=TYPENUM_BUILD_CONSTS=/Users/danmugisho/Documents/Rust/rust-full-stack-authentication-system/backend/target/debug/build/typenum-01b54966becd51ec/out/consts.rs
-cargo:rustc-env=TYPENUM_BUILD_OP=/Users/danmugisho/Documents/Rust/rust-full-stack-authentication-system/backend/target/debug/build/typenum-01b54966becd51ec/out/op.rs
+cargo:rustc-env=TYPENUM_BUILD_CONSTS=/Users/danmugisho/Documents/Rust/backend/target/debug/build/typenum-01b54966becd51ec/out/consts.rs
+cargo:rustc-env=TYPENUM_BUILD_OP=/Users/danmugisho/Documents/Rust/backend/target/debug/build/typenum-01b54966becd51ec/out/op.rs
