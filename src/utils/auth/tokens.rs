@@ -35,7 +35,6 @@ pub async fn issue_confirmation_token_pasetors(
     redis_connection
         .set(
             redis_key.clone(),
-            // I just want to validate that the key exists to indicate the session is "live".
             String::new(),
         )
         .await
@@ -74,7 +73,6 @@ pub async fn issue_confirmation_token_pasetors(
         })?;
 
     let mut claims = Claims::new().unwrap();
-    // Set custom expiration, default is 1 hour
     claims.expiration(&dt.to_rfc3339()).unwrap();
     claims
         .add_additional("user_id", serde_json::json!(user_id))
