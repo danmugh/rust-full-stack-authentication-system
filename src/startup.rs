@@ -24,7 +24,7 @@ impl Application {
             settings.application.host, settings.application.port
         );
 
-        let listener = std::net::TcpListener::bind(&address)?;
+        let listener = std::net::TcpListener::bind(&address)?;  
         let port = listener.local_addr().unwrap().port();
         let server = run(listener, connection_pool, settings).await?;
 
