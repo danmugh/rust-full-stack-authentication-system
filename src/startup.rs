@@ -67,7 +67,10 @@ async fn run(
 
     let server = actix_web::HttpServer::new(move || {
        actix_web::App::new().service(routes::health_check)
-       // Add database pool to application state
+       .service(crate::routes::health_check)
+        // Authentication routes
+        .configure(crate::routes::auth_routes_config)
+        // Add database pool to application state
        .app_data(pool.clone())
        // Add redis pool to application state
        .app_data(redis_pool_data.clone())

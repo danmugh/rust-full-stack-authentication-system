@@ -16,9 +16,7 @@ pub struct CreateNewUser {
     last_name: String,
 }
 
-#[tracing::instrument(name = "Adding a new user",
-skip( pool, new_user, redis_pool),
-fields(
+#[tracing::instrument(name = "Adding a new user", skip(pool, new_user, redis_pool), fields(
     new_user_email = %new_user.email,
     new_user_first_name = %new_user.first_name,
     new_user_last_name = %new_user.last_name
@@ -108,7 +106,7 @@ pub async fn register_user(
     })
 }
 
-#[tracing::instrument(name = "Inserting new user into DB.", skip(transaction, new_user),fields(
+#[tracing::instrument(name = "Inserting new user into DB.", skip(transaction, new_user), fields(
     new_user_email = %new_user.email,
     new_user_first_name = %new_user.first_name,
     new_user_last_name = %new_user.last_name
