@@ -67,7 +67,20 @@ async fn run(
     let secret_key = actix_web::cookie::Key::from(settings.secret.hmac_secret.as_bytes());
 
     let server = actix_web::HttpServer::new(move || {
-       actix_web::App::new()
+        actix_web::App::new()
+        .wrap(
+            actix_cors::Cors::default()
+                .allowed_origin(&settings.frontend_url)
+                .allowed_methods(vec!["GET", "POST", "PATCH", "DELETE"])
+                .allowed_headers(vec![
+                    actix_web::http::header::AUTHORIZATION,
+                    actix_web::http::header::ACCEPT,
+                ])
+                .allowed_header(actix_web::http::header::CONTENT_TYPE)
+                .expose_headers(&[actix_web::http::header::CONTENT_DISPOSITION])
+                .supports_credentials()
+                .max_age(3600),
+            )
        .wrap(
         if settings.debug {
             actix_session::SessionMiddleware::builder(
