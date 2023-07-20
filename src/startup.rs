@@ -40,14 +40,6 @@ impl Application {
     }
 }
 
-pub async fn get_connection_pool(
-    settings: &crate::settings::DatabaseSettings,
-) -> sqlx::postgres::PgPool {
-sqlx::postgres::PgPoolOptions::new()
-    .acquire_timeout(std::time::Duration::from_secs(2))
-    .connect_lazy_with(settings.connect_to_db())
-}
-
 async fn run(
     listener: std::net::TcpListener,
     db_pool: sqlx::postgres::PgPool,
@@ -55,6 +47,23 @@ async fn run(
 ) -> Result<actix_web::dev::Server, std::io::Error> {
     // Database connection pool application state
     let pool = actix_web::web::Data::new(db_pool);
+
+    let connection_pool = if let Some(pool) = test_pool {
+        pool
+    } else {
+        let db_url = std::env::var("DATABASE_URL").expect("Failed to get DATABASE_URL.");
+        match sqlx::postgres::PgPoolOptions::new()
+            .max_connections(5)
+            .connect(&db_url)
+            .await
+        {
+            Ok(pool) => pool,
+            Err(e) => {
+                tracing::event!(target: "sqlx",tracing::Level::ERROR, "Couldn't establish DB connection!: {:#?}", e);
+                panic!("Couldn't establish DB connection!")
+            }
+        }
+    };
 
     // Redis connection pool
     let cfg = deadpool_redis::Config::from_url(settings.clone().redis.uri);
@@ -81,22 +90,6 @@ async fn run(
                 .supports_credentials()
                 .max_age(3600),
             )
-       .wrap(
-        if settings.debug {
-            actix_session::SessionMiddleware::builder(
-                actix_session::storage::CookieSessionStore::default(),
-                secret_key.clone(),
-            )
-            .cookie_http_only(true)
-            .cookie_same_site(actix_web::cookie::SameSite::None)
-            .cookie_secure(true)
-            .build()
-        } else {
-            actix_session::SessionMiddleware::new(
-                actix_session::storage::CookieSessionStore::default(),
-                secret_key.clone(),
-            )
-        })
         .service(crate::routes::health_check)
         // Authentication routes
         .configure(crate::routes::auth_routes_config)
