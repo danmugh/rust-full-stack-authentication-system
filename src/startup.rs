@@ -48,6 +48,8 @@ async fn run(
     // Database connection pool application state
     let pool = actix_web::web::Data::new(db_pool);
 
+    let s3_client = actix_web::web::Data::new(configure_and_return_s3_client().await);
+
     let connection_pool = if let Some(pool) = test_pool {
         pool
     } else {
@@ -97,9 +99,37 @@ async fn run(
         .app_data(pool.clone())
         // Add redis pool to application state
         .app_data(redis_pool_data.clone())
+        // S3 client
+        .app_data(s3_client.clone())
     })
     .listen(listener)?
     .run();
 
     Ok(server)
+}
+
+async fn configure_and_return_s3_client() -> crate::uploads::Client {
+    // S3 configuration and client
+    // Get id and secret key from the environment
+    let aws_key = std::env::var("AWS_ACCESS_KEY_ID").expect("Failed to get AWS key.");
+    let aws_key_secret =
+        std::env::var("AWS_SECRET_ACCESS_KEY").expect("Failed to get AWS secret key.");
+    // build the aws cred
+    let aws_cred = aws_sdk_s3::config::Credentials::new(
+        aws_key,
+        aws_key_secret,
+        None,
+        None,
+        "loaded-from-custom-env",
+    );
+    // build the aws client
+    let aws_region = aws_sdk_s3::config::Region::new(
+        std::env::var("AWS_REGION").unwrap_or("eu-west-2".to_string()),
+    );
+    let aws_config_builder = aws_sdk_s3::config::Builder::new()
+        .region(aws_region)
+        .credentials_provider(aws_cred);
+
+    let aws_config = aws_config_builder.build();
+    crate::uploads::Client::new(aws_config)
 }
