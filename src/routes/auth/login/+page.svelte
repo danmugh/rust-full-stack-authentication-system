@@ -23,6 +23,13 @@
             },
             'include'
         );
+
+        let nextPage = $page.url.search.split('=')[1];
+        if ($page.url.hash) {
+            nextPage = `${nextPage}${$page.url.hash}`;
+        }
+        await goto(nextPage || '/', { noScroll: true });
+
         if (err.length > 0) {
             loading.setLoading(false);
             errors = err;

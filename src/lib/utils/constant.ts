@@ -43,3 +43,6 @@ export const topics: Array<Topic> = [
         url: 'https://dev.to/sirneij/authentication-system-using-rust-actix-web-and-sveltekit-login-and-logout-1eb9'
     }
 ];
+
+export const IMAGE_UPLOAD_SIZE = ~~import.meta.env.VITE_IMAGE_UPLOAD_SIZE || 70;
+export const HIGHEST_IMAGE_UPLOAD_SIZE = IMAGE_UPLOAD_SIZE * 1024;
