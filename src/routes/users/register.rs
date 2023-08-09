@@ -45,7 +45,7 @@ pub async fn register_user(
         email: new_user.0.email,
         first_name: new_user.0.first_name,
         last_name: new_user.0.last_name,
-    };
+    }; 
 
     let user_id = match insert_created_user_into_db(&mut transaction, &create_new_user).await {
         Ok(id) => id,
