@@ -4,6 +4,21 @@
     import JohnImage from '$lib/svgs/john.svg';
     import Avatar from '$lib/svgs/teamavatar.png';
     import { logout } from '$lib/utils/requests/logout.requests';
+
+    const handleLogout: SubmitFunction = () => {
+        loading.setLoading(true, 'Please wait while we log you out...');
+        return async ({ result }) => {
+            loading.setLoading(false);
+            if (result.type === 'success' || result.type === 'redirect') {
+                $notification = {
+                    message: `Logout successfull ${happyEmoji}...`,
+                    colorName: `emerald`
+                };
+            }
+            await applyAction(result);
+        };
+    };
+
 </script>
 
 <header aria-label="Page Header" class="mb-6">
@@ -47,13 +62,9 @@
                         class="h-10 w-10 rounded-full object-cover"
                     />
                 </a>
-                <button
-                    type="button"
-                    class="text-white hover:text-sky-400"
-                    on:click={() => logout($page.data.fetch)}
-                >
-                    Logout
-                </button>
+                <form action="/auth/logout" method="POST" use:enhance={handleLogout}>
+                    <button type="submit" class="text-white hover:text-sky-400 logout">Logout</button>
+                </form>
             {/if}
         </div>
     </nav>
