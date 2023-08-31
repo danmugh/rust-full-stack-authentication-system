@@ -6,6 +6,7 @@ mod login;
 mod logout;
 mod update_user;
 mod generate_new_token;
+mod password_change;
 
 pub fn auth_routes_config(cfg: &mut actix_web::web::ServiceConfig) {
     cfg.service(actix_web::web::scope("/users")
@@ -14,5 +15,7 @@ pub fn auth_routes_config(cfg: &mut actix_web::web::ServiceConfig) {
     .service(login::login_user)
     .service(update_user::update_users_details)
     .service(generate_new_token::regenerate_token)
+    // Password operations
+    .configure(password_change::password_routes_config)
     .service(logout::log_out)
 }
