@@ -1,5 +1,5 @@
 export interface Topic {
-	id: number;
+	id: number | string;
 	title: string;
 	url: string;
 }
@@ -31,6 +31,14 @@ export interface PasswordChange {
 	password: string;
 }
 
+interface UserProfile {
+	id: string;
+	user_id: string;
+	phone_number: string | null;
+	birth_date: string | null;
+	github_link: string | null;
+}
+
 export interface User {
 	email: string;
 	first_name: string;
@@ -39,6 +47,7 @@ export interface User {
 	is_staff: boolean;
 	thumbnail: string;
 	is_superuser: boolean;
+	profile: UserProfile;
 }
 
 type Status = 'IDLE' | 'LOADING' | 'NAVIGATING';
@@ -46,4 +55,11 @@ type Status = 'IDLE' | 'LOADING' | 'NAVIGATING';
 export interface Loading {
 	status: Status;
 	message: string;
+}
+
+export interface SeriesAndArticles {
+	id: string;
+	name: string;
+	image: string;
+	articles: Array<Topic>;
 }
