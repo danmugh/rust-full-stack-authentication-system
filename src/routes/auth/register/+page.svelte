@@ -8,7 +8,6 @@
 	import {
 		isValidEmail,
 		isValidPasswordMedium,
-		isValidPasswordStrong
 	} from '$lib/utils/helpers/input.validation';
 	import { post } from '$lib/utils/requests/posts.requests';
 	import type { ApiResponse, CustomError } from '$lib/utils/types';
@@ -78,7 +77,7 @@
         class="w-11/12 md:w-2/3 lg:w-1/3 rounded-xl flex flex-col items-center bg-slate-800 py-6"
         on:submit|preventDefault={handleRegister}
     >
-        <h1 class="text-center text-2xl font-bold text-sky-400 mb-6">Register</h1>
+        <div class="text-center text-2xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-t from-sky-600 to-sky-400">Register Now</div>
 
         {#if errors}
             {#each errors as error (error.id)}
@@ -98,7 +97,7 @@
                 name="email"
                 id="email"
                 bind:value={email}
-                class="w-full text-sky-500 placeholder:text-slate-600 border-none focus:ring-0 bg-main-color focus:outline-none py-2 px-3 rounded"
+                class="w-full text-white placeholder:text-slate-600 border-none focus:ring-0 bg-main-color focus:outline-none py-2 px-3 rounded"
                 placeholder="Email address"
                 required
             />
@@ -115,7 +114,7 @@
                 name="first_name"
                 bind:value={first_name}
                 id="first-name"
-                class="w-full text-sky-500 placeholder:text-slate-600 border-none focus:ring-0 bg-main-color focus:outline-none py-2 px-3 rounded"
+                class="w-full text-white placeholder:text-slate-600 border-none focus:ring-0 bg-main-color focus:outline-none py-2 px-3 rounded"
                 placeholder="First name"
                 required
             />
@@ -126,7 +125,7 @@
                 name="last_name"
                 id="last-name"
                 bind:value={last_name}
-                class="w-full text-sky-500 placeholder:text-slate-600 border-none focus:ring-0 bg-main-color focus:outline-none py-2 px-3 rounded"
+                class="w-full text-white placeholder:text-slate-600 border-none focus:ring-0 bg-main-color focus:outline-none py-2 px-3 rounded"
                 placeholder="Last name"
                 required
             />
@@ -138,7 +137,7 @@
                 name="password"
                 bind:value={password}
                 id="password"
-                class="w-full text-sky-500 placeholder:text-slate-600 border-none focus:ring-0 bg-main-color focus:outline-none py-2 px-3 rounded"
+                class="w-full text-white placeholder:text-slate-600 border-none focus:ring-0 bg-main-color focus:outline-none py-2 px-3 rounded"
                 placeholder="Password"
                 required
             />
@@ -155,7 +154,7 @@
                 name="confirm-password"
                 bind:value={confirmPassword}
                 id="confirm-password"
-                class="w-full text-sky-500 placeholder:text-slate-600 border-none focus:ring-0 bg-main-color focus:outline-none py-2 px-3 rounded"
+                class="w-full text-white placeholder:text-slate-600 border-none focus:ring-0 bg-main-color focus:outline-none py-2 px-3 rounded"
                 placeholder="Confirm password"
                 required
             />
@@ -169,12 +168,12 @@
         <div class="w-3/4">
             <button
                 type="submit"
-                class="py-2 bg-sky-800 w-full rounded text-blue-50 font-bold hover:bg-sky-700"
+                class="py-2 bg-gradient-to-l from-sky-500 to-sky-800 w-full rounded text-blue-50 font-bold hover:bg-sky-700"
             >
                 Create account
             </button>
         </div>
-        <div class="w-3/4 flex flex-row justify-center mt-1">
+        <div class="w-3/4 flex flex-row justify-center my-3">
             <span class="text-sm text-sky-400">
                 Already have an account?
                 <a
